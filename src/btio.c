@@ -23,7 +23,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include <stdarg.h>
@@ -34,14 +34,14 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
-#include "bluetooth.h"
-#include "l2cap.h"
-#include "rfcomm.h"
-#include "sco.h"
+#include <bluetooth.h>
+#include <l2cap.h>
+#include <rfcomm.h>
+#include <sco.h>
 
 #include <glib.h>
 
-#include "btio.h"
+#include <btio.h>
 
 #ifndef BT_FLUSHABLE
 #define BT_FLUSHABLE	8

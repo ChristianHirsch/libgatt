@@ -30,11 +30,11 @@
 #include <stdlib.h>
 #include <glib.h>
 
-#include "sdp.h"
-#include "sdp_lib.h"
-#include "uuid.h"
-#include "gattrib.h"
-#include "gatt.h"
+#include <sdp.h>
+#include <sdp_lib.h>
+#include <uuid.h>
+#include <gattrib.h>
+#include <gatt.h>
 
 struct discover_primary {
 	GAttrib *attrib;

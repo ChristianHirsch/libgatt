@@ -22,11 +22,11 @@
  *
  */
 
-#include "uuid.h"
-#include "att.h"
-#include "btio.h"
-#include "gattrib.h"
-#include "sdp.h"
+#include <uuid.h>
+#include <att.h>
+#include <btio.h>
+#include <gattrib.h>
+#include <sdp.h>
 
 /* GATT Profile Attribute types */
 #define GATT_PRIM_SVC_UUID		0x2800

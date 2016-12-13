@@ -23,7 +23,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include <errno.h>
@@ -32,9 +32,9 @@
 
 #include <glib.h>
 
-#include "bluetooth.h"
-#include "uuid.h"
-#include "att.h"
+#include <bluetooth.h>
+#include <uuid.h>
+#include <att.h>
 
 const char *att_ecode2str(uint8_t status)
 {

@@ -23,7 +23,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include <stdint.h>
@@ -33,13 +33,13 @@
 
 #include <stdio.h>
 
-#include "bluetooth.h"
-#include "btio.h"
+#include <bluetooth.h>
+#include <btio.h>
 
-#include "uuid.h"
-#include "log.h"
-#include "att.h"
-#include "gattrib.h"
+#include <uuid.h>
+#include <log.h>
+#include <att.h>
+#include <gattrib.h>
 
 #define GATT_TIMEOUT 30
 

@@ -42,12 +42,12 @@
 #include <sys/un.h>
 #include <netinet/in.h>
 
-#include "bluetooth.h"
-#include "hci.h"
-#include "hci_lib.h"
-#include "l2cap.h"
-#include "sdp.h"
-#include "sdp_lib.h"
+#include <bluetooth.h>
+#include <hci.h>
+#include <hci_lib.h>
+#include <l2cap.h>
+#include <sdp.h>
+#include <sdp_lib.h>
 
 #define SDPINF(fmt, arg...) syslog(LOG_INFO, fmt "\n", ## arg)
 #define SDPERR(fmt, arg...) syslog(LOG_ERR, "%s: " fmt "\n", __func__ , ## arg)

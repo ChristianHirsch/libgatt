@@ -24,7 +24,7 @@
  */
 
 #include <glib.h>
-#include "btio.h"
+#include <btio.h>
 
 GIOChannel *gatt_connect(const char *src, const char *dst,
       const char *dst_type, const char *sec_level,

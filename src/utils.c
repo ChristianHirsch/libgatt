@@ -22,16 +22,16 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include <stdlib.h>
 
-#include "utils.h"
-#include "uuid.h"
-#include "att.h"
-#include "gattrib.h"
-#include "gatt.h"
+#include <utils.h>
+#include <uuid.h>
+#include <att.h>
+#include <gattrib.h>
+#include <gatt.h>
 
 GIOChannel *gatt_connect(const char *src, const char *dst,
 				const char *dst_type, const char *sec_level,
