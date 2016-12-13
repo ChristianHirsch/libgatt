@@ -22,6 +22,9 @@
  *
  */
 
+#ifndef GATT_H
+#define GATT_H
+
 #include <uuid.h>
 #include <att.h>
 #include <btio.h>
@@ -116,3 +119,4 @@ guint gatt_exchange_mtu(GAttrib *attrib, uint16_t mtu, GAttribResultFunc func,
 gboolean gatt_parse_record(const sdp_record_t *rec,
 					uuid_t *prim_uuid, uint16_t *psm,
 					uint16_t *start, uint16_t *end);
+#endif

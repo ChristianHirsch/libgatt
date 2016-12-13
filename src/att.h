@@ -22,6 +22,9 @@
  *
  */
 
+#ifndef __ATT_H
+#define __ATT_H
+
 #include <bluetooth.h>
 #include <uuid.h>
 #include <glib.h>
@@ -285,3 +288,5 @@ uint16_t dec_prep_write_resp(const uint8_t *pdu, size_t len, uint16_t *handle,
 						size_t *vlen);
 uint16_t enc_exec_write_req(uint8_t flags, uint8_t *pdu, size_t len);
 uint16_t dec_exec_write_resp(const uint8_t *pdu, size_t len);
+
+#endif
