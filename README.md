@@ -6,19 +6,10 @@ This is simply the [BlueZ 5.7](http://www.bluez.org/) GATT/LE code extracted int
 Simply execute the following commands:
 
 ```
-$ autoheader
-$ libtoolize
-$ aclocal
-$ autoconf
-$ automake --add-missing --foreign
+$ ./bootstrap
 $ ./configure
 $ make -j`nproc`
 
-```
-Or better:
-
-```
-$ autoheader && libtoolize && aclocal && autoconf && automake --add-missing --foreign && ./configure && make -j`nproc`
 ```
 
 To install:
