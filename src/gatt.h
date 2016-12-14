@@ -86,6 +86,8 @@ GIOChannel *gatt_connect(const char *src, const char *dst,
       int psm, int mtu, BtIOConnect connect_cb,
       GError **gerr);
 
+size_t gatt_attr_data_from_string(const char *str, uint8_t **data);
+
 guint gatt_discover_primary(GAttrib *attrib, bt_uuid_t *uuid, gatt_cb_t func,
 							gpointer user_data);
 
