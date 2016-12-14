@@ -32,6 +32,7 @@
 
 #include <sdp.h>
 #include <sdp_lib.h>
+#include <hci_lib.h>
 #include <uuid.h>
 #include <gattrib.h>
 #include <gatt.h>
