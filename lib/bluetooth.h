@@ -69,6 +69,7 @@ struct bt_security {
 #define BT_SECURITY_LOW		1
 #define BT_SECURITY_MEDIUM	2
 #define BT_SECURITY_HIGH	3
+#define BT_SECURITY_FIPS	4
 
 #define BT_DEFER_SETUP	7
 
@@ -76,6 +77,13 @@ struct bt_security {
 
 #define BT_FLUSHABLE_OFF	0
 #define BT_FLUSHABLE_ON		1
+
+#define BT_POWER		9
+struct bt_power {
+	uint8_t force_active;
+};
+#define BT_POWER_FORCE_ACTIVE_OFF 0
+#define BT_POWER_FORCE_ACTIVE_ON  1
 
 #define BT_CHANNEL_POLICY	10
 
@@ -103,6 +111,17 @@ struct bt_security {
  *     than BR/EDR.
  */
 #define BT_CHANNEL_POLICY_AMP_PREFERRED		2
+
+#define BT_VOICE		11
+struct bt_voice {
+	uint16_t setting;
+};
+
+#define BT_SNDMTU		12
+#define BT_RCVMTU		13
+
+#define BT_VOICE_TRANSPARENT			0x0003
+#define BT_VOICE_CVSD_16BIT			0x0060
 
 /* Connection and socket states */
 enum {
@@ -138,18 +157,18 @@ enum {
 
 /* Bluetooth unaligned access */
 #define bt_get_unaligned(ptr)			\
-({						\
+__extension__ ({				\
 	struct __attribute__((packed)) {	\
-		typeof(*(ptr)) __v;		\
-	} *__p = (typeof(__p)) (ptr);		\
+		__typeof__(*(ptr)) __v;		\
+	} *__p = (__typeof__(__p)) (ptr);	\
 	__p->__v;				\
 })
 
 #define bt_put_unaligned(val, ptr)		\
 do {						\
 	struct __attribute__((packed)) {	\
-		typeof(*(ptr)) __v;		\
-	} *__p = (typeof(__p)) (ptr);		\
+		__typeof__(*(ptr)) __v;		\
+	} *__p = (__typeof__(__p)) (ptr);	\
 	__p->__v = (val);			\
 } while(0)
 
@@ -325,6 +344,16 @@ typedef struct {
 	uint8_t data[16];
 } uint128_t;
 
+static inline void bswap_128(const void *src, void *dst)
+{
+	const uint8_t *s = (const uint8_t *) src;
+	uint8_t *d = (uint8_t *) dst;
+	int i;
+
+	for (i = 0; i < 16; i++)
+		d[15 - i] = s[i];
+}
+
 #if __BYTE_ORDER == __BIG_ENDIAN
 
 #define ntoh64(x) (x)
@@ -336,10 +365,7 @@ static inline void ntoh128(const uint128_t *src, uint128_t *dst)
 
 static inline void btoh128(const uint128_t *src, uint128_t *dst)
 {
-	int i;
-
-	for (i = 0; i < 16; i++)
-		dst->data[15 - i] = src->data[i];
+	bswap_128(src, dst);
 }
 
 #else
@@ -357,10 +383,7 @@ static inline uint64_t ntoh64(uint64_t n)
 
 static inline void ntoh128(const uint128_t *src, uint128_t *dst)
 {
-	int i;
-
-	for (i = 0; i < 16; i++)
-		dst->data[15 - i] = src->data[i];
+	bswap_128(src, dst);
 }
 
 static inline void btoh128(const uint128_t *src, uint128_t *dst)

@@ -26,10 +26,6 @@
 
 #include <glib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define BT_IO_ERROR bt_io_error_quark()
 
 GQuark bt_io_error_quark(void);
@@ -59,6 +55,7 @@ typedef enum {
 	BT_IO_OPT_MODE,
 	BT_IO_OPT_FLUSHABLE,
 	BT_IO_OPT_PRIORITY,
+	BT_IO_OPT_VOICE,
 } BtIOOption;
 
 typedef enum {
@@ -95,7 +92,4 @@ GIOChannel *bt_io_listen(BtIOConnect connect, BtIOConfirm confirm,
 				gpointer user_data, GDestroyNotify destroy,
 				GError **err, BtIOOption opt1, ...);
 
-#ifdef __cplusplus
-}
-#endif
 #endif

@@ -55,10 +55,14 @@ extern "C" {
 #define HCI_RS232	4
 #define HCI_PCI		5
 #define HCI_SDIO	6
+#define HCI_SPI		7
+#define HCI_I2C		8
+#define HCI_SMD		9
 
 /* HCI controller types */
-#define HCI_BREDR	0x00
+#define HCI_PRIMARY	0x00
 #define HCI_AMP		0x01
+#define HCI_BREDR	HCI_PRIMARY
 
 /* HCI device flags */
 enum {
@@ -560,6 +564,13 @@ typedef struct {
 #define CREATE_PHYSICAL_LINK_CP_SIZE 35
 
 #define OCF_ACCEPT_PHYSICAL_LINK		0x0036
+typedef struct {
+	uint8_t		handle;
+	uint8_t		key_length;
+	uint8_t		key_type;
+	uint8_t		key[32];
+} __attribute__ ((packed)) accept_physical_link_cp;
+#define ACCEPT_PHYSICAL_LINK_CP_SIZE 35
 
 #define OCF_DISCONNECT_PHYSICAL_LINK		0x0037
 typedef struct {
@@ -650,9 +661,9 @@ typedef struct {
 } __attribute__ ((packed)) hci_qos;
 #define HCI_QOS_CP_SIZE 17
 typedef struct {
-	uint16_t 	handle;
-	uint8_t 	flags;			/* Reserved */
-	hci_qos 	qos;
+	uint16_t	handle;
+	uint8_t		flags;			/* Reserved */
+	hci_qos		qos;
 } __attribute__ ((packed)) qos_setup_cp;
 #define QOS_SETUP_CP_SIZE (3 + HCI_QOS_CP_SIZE)
 
@@ -681,7 +692,7 @@ typedef struct {
 } __attribute__ ((packed)) read_link_policy_cp;
 #define READ_LINK_POLICY_CP_SIZE 2
 typedef struct {
-	uint8_t 	status;
+	uint8_t		status;
 	uint16_t	handle;
 	uint16_t	policy;
 } __attribute__ ((packed)) read_link_policy_rp;
@@ -694,7 +705,7 @@ typedef struct {
 } __attribute__ ((packed)) write_link_policy_cp;
 #define WRITE_LINK_POLICY_CP_SIZE 4
 typedef struct {
-	uint8_t 	status;
+	uint8_t		status;
 	uint16_t	handle;
 } __attribute__ ((packed)) write_link_policy_rp;
 #define WRITE_LINK_POLICY_RP_SIZE 3
@@ -1699,6 +1710,37 @@ typedef struct {
 } __attribute__ ((packed)) le_test_end_rp;
 #define LE_TEST_END_RP_SIZE 3
 
+#define OCF_LE_ADD_DEVICE_TO_RESOLV_LIST	0x0027
+typedef struct {
+	uint8_t		bdaddr_type;
+	bdaddr_t	bdaddr;
+	uint8_t		peer_irk[16];
+	uint8_t		local_irk[16];
+} __attribute__ ((packed)) le_add_device_to_resolv_list_cp;
+#define LE_ADD_DEVICE_TO_RESOLV_LIST_CP_SIZE 39
+
+#define OCF_LE_REMOVE_DEVICE_FROM_RESOLV_LIST	0x0028
+typedef struct {
+	uint8_t		bdaddr_type;
+	bdaddr_t	bdaddr;
+} __attribute__ ((packed)) le_remove_device_from_resolv_list_cp;
+#define LE_REMOVE_DEVICE_FROM_RESOLV_LIST_CP_SIZE 7
+
+#define OCF_LE_CLEAR_RESOLV_LIST		0x0029
+
+#define OCF_LE_READ_RESOLV_LIST_SIZE		0x002A
+typedef struct {
+	uint8_t		status;
+	uint8_t		size;
+} __attribute__ ((packed)) le_read_resolv_list_size_rp;
+#define LE_READ_RESOLV_LIST_SIZE_RP_SIZE 2
+
+#define OCF_LE_SET_ADDRESS_RESOLUTION_ENABLE	0x002D
+typedef struct {
+	uint8_t		enable;
+} __attribute__ ((packed)) le_set_address_resolution_enable_cp;
+#define LE_SET_ADDRESS_RESOLUTION_ENABLE_CP_SIZE 1
+
 /* Vendor specific commands */
 #define OGF_VENDOR_CMD		0x3f
 
@@ -1808,14 +1850,14 @@ typedef struct {
 } __attribute__ ((packed)) evt_qos_setup_complete;
 #define EVT_QOS_SETUP_COMPLETE_SIZE (4 + HCI_QOS_CP_SIZE)
 
-#define EVT_CMD_COMPLETE 		0x0E
+#define EVT_CMD_COMPLETE		0x0E
 typedef struct {
 	uint8_t		ncmd;
 	uint16_t	opcode;
 } __attribute__ ((packed)) evt_cmd_complete;
 #define EVT_CMD_COMPLETE_SIZE 3
 
-#define EVT_CMD_STATUS 			0x0F
+#define EVT_CMD_STATUS			0x0F
 typedef struct {
 	uint8_t		status;
 	uint8_t		ncmd;
@@ -2251,25 +2293,25 @@ typedef struct {
 	uint16_t	opcode;		/* OCF & OGF */
 	uint8_t		plen;
 } __attribute__ ((packed))	hci_command_hdr;
-#define HCI_COMMAND_HDR_SIZE 	3
+#define HCI_COMMAND_HDR_SIZE	3
 
 typedef struct {
 	uint8_t		evt;
 	uint8_t		plen;
 } __attribute__ ((packed))	hci_event_hdr;
-#define HCI_EVENT_HDR_SIZE 	2
+#define HCI_EVENT_HDR_SIZE	2
 
 typedef struct {
 	uint16_t	handle;		/* Handle & Flags(PB, BC) */
 	uint16_t	dlen;
 } __attribute__ ((packed))	hci_acl_hdr;
-#define HCI_ACL_HDR_SIZE 	4
+#define HCI_ACL_HDR_SIZE	4
 
 typedef struct {
 	uint16_t	handle;
 	uint8_t		dlen;
 } __attribute__ ((packed))	hci_sco_hdr;
-#define HCI_SCO_HDR_SIZE 	3
+#define HCI_SCO_HDR_SIZE	3
 
 typedef struct {
 	uint16_t	device;
@@ -2307,8 +2349,10 @@ struct sockaddr_hci {
 #define HCI_DEV_NONE	0xffff
 
 #define HCI_CHANNEL_RAW		0
+#define HCI_CHANNEL_USER	1
 #define HCI_CHANNEL_MONITOR	2
 #define HCI_CHANNEL_CONTROL	3
+#define HCI_CHANNEL_LOGGING	4
 
 struct hci_filter {
 	uint32_t type_mask;
